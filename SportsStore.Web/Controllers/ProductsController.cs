@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using SportsStore.Web.EF;
 using SportsStore.Web.Models;
 
@@ -24,6 +25,8 @@ namespace SportsStore.Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProduct(long id)
         {
             Product p = await _context.Products.FindAsync(id);

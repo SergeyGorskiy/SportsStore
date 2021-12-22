@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<h6 class="bg-primary text-white text-center m-2 p-2">@RenderSection("Header")</h6>
+
+<div class="m-2">
+    <table class="table table-sm table-striped table-bordered">
+        <tbody>@RenderBody()</tbody>
+    </table>
+</div>
+
+<h6 class="bg-primary text-white text-center m-2 p-2">@RenderSection("Footer")</h6>
+
+@RenderSection("Summary")
+
+</body>
+</html>

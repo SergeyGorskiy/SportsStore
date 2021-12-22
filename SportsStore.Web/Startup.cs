@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +26,14 @@ namespace SportsStore.Web
                 opts.EnableSensitiveDataLogging(true);
             });
 
-            services.AddControllers();
-            services.Configure<JsonOptions>(opts => { opts.JsonSerializerOptions.IgnoreNullValues = true; });
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => { options.Cookie.IsEssential = true; });
+            services.Configure<RazorPagesOptions>(opts =>
+            {
+                opts.Conventions.AddPageRoute("/Index", "/extra/page/{id:long?}");
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
@@ -44,17 +49,16 @@ namespace SportsStore.Web
 
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseSession();
 
-            app.UseMiddleware<TestMiddleware>();
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World"); });
-
-                //endpoints.MapWebService();
-
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
+                
             });
 
             SeedData.SeedDatabase(context);
