@@ -1,0 +1,40 @@
+﻿@page "/noid"
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using SportsStore.Web.Models
+@model NotFoundModel
+
+@functions
+{
+    public class NotFoundModel : PageModel
+    {
+        private readonly DataContext _context;
+
+        public IEnumerable<Product> Products { get; set; }
+
+        public NotFoundModel(DataContext context)
+        {
+            _context = context;
+        }
+
+        public void OnGet(long id = 1)
+        {
+            Products = _context.Products;
+        }
+    }
+}
+
+<html>
+<head>
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Not Found</title>
+</head>
+<body>
+<div class="bg-primary text-white text-center m-2 p-2">Mo Matching ID</div>
+<ul class="list-group m-2">
+    @foreach (Product p in Model.Products)
+    {
+        <li class="list-group-item">@p.Name (ID: @p.ProductId)</li>
+    }
+</ul>
+</body>
+</html>
