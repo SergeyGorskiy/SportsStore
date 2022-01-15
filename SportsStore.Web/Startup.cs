@@ -34,6 +34,7 @@ namespace SportsStore.Web
             {
                 opts.Conventions.AddPageRoute("/Index", "/extra/page/{id:long?}");
             });
+            services.AddSingleton<CitiesData>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)

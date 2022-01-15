@@ -1,11 +1,5 @@
 ﻿@page "{id:long?}"
 @model IndexModel
 
-<html>
-    <head>
-        <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="bg-primary text-white text-center m-2 p-2">@Model.Product.Name</div>
-    </body>
-</html>
+<div class="bg-primary text-white text-center m-2 p-2">@Model.Product.Name</div>
+<partial name="Shared/_ProductPartial" model="Model.Product" />

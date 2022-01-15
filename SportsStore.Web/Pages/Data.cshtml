@@ -1,0 +1,33 @@
+﻿@page
+@model DataPageModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+
+@functions 
+{
+    public class DataPageModel : PageModel
+    {
+        private readonly DataContext _context;
+
+        public DataPageModel(DataContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<Category> Categories { get; set; }
+
+        public void OnGet()
+        {
+            Categories = _context.Categories;
+        }
+
+    }
+}
+
+<h5 class="bg-primary text-white text-center m-2 p-2">Categories</h5>
+<ul class="list-group m-2">
+    @foreach (Category c in Model.Categories)
+    {
+        <li class="list-group-item">@c.Name</li>
+    }
+</ul>
+<div class="bg-info text-white m-2 p-2"><vc:city-summary /></div>
