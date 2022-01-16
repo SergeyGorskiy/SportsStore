@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Web.EF;
+using SportsStore.Web.ViewModels;
 
 namespace SportsStore.Web.Components
 {
@@ -13,9 +14,15 @@ namespace SportsStore.Web.Components
             _data = data;
         }
 
-        public string Invoke()
+        public IViewComponentResult Invoke(string themeName)
         {
-            return $"{_data.Cities.Count()} cities, {_data.Cities.Sum(c => c.Population)} people";
+            ViewBag.Theme = themeName;
+
+            return View(new CityViewModel
+            {
+                Cities = _data.Cities.Count(), 
+                Population = _data.Cities.Sum(c => c.Population)
+            });
         }
     }
 }
