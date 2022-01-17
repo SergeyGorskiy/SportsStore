@@ -25,15 +25,8 @@ namespace SportsStore.Web
                 opts.UseSqlServer(Configuration["ConnectionStrings:SportsStoreProductConnection"]);
                 opts.EnableSensitiveDataLogging(true);
             });
-
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddDistributedMemoryCache();
-            services.AddSession(options => { options.Cookie.IsEssential = true; });
-            services.Configure<RazorPagesOptions>(opts =>
-            {
-                opts.Conventions.AddPageRoute("/Index", "/extra/page/{id:long?}");
-            });
             services.AddSingleton<CitiesData>();
         }
 
@@ -49,8 +42,6 @@ namespace SportsStore.Web
             }
 
             app.UseStaticFiles();
-
-            app.UseSession();
 
             app.UseRouting();
 
