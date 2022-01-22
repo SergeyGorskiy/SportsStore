@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,11 +31,13 @@ namespace SportsStore.Web
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<CitiesData>();
+            services.Configure<AntiforgeryOptions>(opts => { opts.HeaderName = "X-XSRF-TOKEN"; });
+
             //services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
             //services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context, IAntiforgery antiforgery)
         {
             if (env.IsDevelopment())
             {
@@ -48,12 +52,23 @@ namespace SportsStore.Web
 
             app.UseRouting();
 
+            app.Use(async (context, next) =>
+            {
+                if (!context.Request.Path.StartsWithSegments("/api"))
+                {
+                    context.Response.Cookies.Append
+                    ("XSRF-TOKEN", antiforgery.GetAndStoreTokens(context).RequestToken,
+                        new CookieOptions {HttpOnly = false});
+                }
+                await next();
+            });
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("forms", "controllers/{controller=Home}/{action=index}/{id?}");
                 endpoints.MapDefaultControllerRoute();
-                
+                endpoints.MapRazorPages();
             });
 
             SeedData.SeedDatabase(context);
