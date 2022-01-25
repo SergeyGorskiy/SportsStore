@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SportsStore.Web.EF;
-using SportsStore.Web.TagHelpers;
 
 namespace SportsStore.Web
 {
@@ -32,9 +32,8 @@ namespace SportsStore.Web
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<CitiesData>();
             services.Configure<AntiforgeryOptions>(opts => { opts.HeaderName = "X-XSRF-TOKEN"; });
-
-            //services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
-            //services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();
+            services.Configure<MvcOptions>(opts =>
+                opts.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Please enter a value"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context, IAntiforgery antiforgery)
