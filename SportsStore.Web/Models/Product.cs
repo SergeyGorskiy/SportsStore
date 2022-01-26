@@ -15,7 +15,7 @@ namespace SportsStore.Web.Models
 
         [Column(TypeName = "decimal(8, 2)")]
         [Required(ErrorMessage = "Please enter a price")]
-        [Range(1.00, 999999.00, ErrorMessage = "Please enter a positive price")]
+        [Range(1, 999999, ErrorMessage = "Please enter a positive price")]
         public decimal Price { get; set; }
 
         [PrimaryKey(ContextType = typeof(DataContext), DataType = typeof(Category))]

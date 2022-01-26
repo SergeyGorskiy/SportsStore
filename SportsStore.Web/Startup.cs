@@ -64,11 +64,10 @@ namespace SportsStore.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=list}/{id?}");
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapControllerRoute("forms", "controllers/{controller=Home}/{action=index}/{id?}");
-                endpoints.MapRazorPages();
-                endpoints.MapControllers();
-                
+                //endpoints.MapRazorPages();
+                //endpoints.MapControllers();
             });
 
             SeedData.SeedDatabase(context);

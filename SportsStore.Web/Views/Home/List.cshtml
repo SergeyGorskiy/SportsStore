@@ -2,25 +2,27 @@
 @{
     Layout = "_SimpleLayout";
 }
-<html>
-    <head>
-        <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    </head>
-<body>
-<h6 class="bg-secondary text-white text-center m-2 p-2">Products</h6>
-    <div class="m-2">
-        <table class="table table-sm table-striped table-bordered">
-            <thead>
-            <tr><th>Name</th><th>Price</th><th>Category</th><th>Supplier</th></tr>
-            </thead>
-            <tbody>
-            @foreach(Product p in Model)
-            {
-                <partial name="_RowPartial" model="p" />
-            }
-            </tbody>
-        </table>
-        <a asp-page="/suppliers/list" class="btn btn-secondary">Suppliers</a>
-    </div>
-</body>
-</html>
+
+<h4 class="bg-primary text-white text-center p-2">Products</h4>
+<table class="table table-sm table-bordered table-striped">
+    <thead>
+        <tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (Product p in Model)
+         {
+            <tr>
+                <td>@p.ProductId</td>
+                <td>@p.Name</td>
+                <td>@p.Price</td>
+                <td>@p.Category.Name</td>
+                <td class="text-center">
+                    <a asp-action="Details" asp-route-id="@p.ProductId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@p.ProductId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@p.ProductId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+         }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Create</a>
