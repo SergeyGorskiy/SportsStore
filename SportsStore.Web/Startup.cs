@@ -66,8 +66,8 @@ namespace SportsStore.Web
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=list}/{id?}");
                 endpoints.MapDefaultControllerRoute();
-                //endpoints.MapRazorPages();
-                //endpoints.MapControllers();
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
 
             SeedData.SeedDatabase(context);
