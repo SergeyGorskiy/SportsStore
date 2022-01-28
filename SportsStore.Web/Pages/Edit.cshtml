@@ -9,12 +9,17 @@
 
         public async Task OnGetAsync(long id)
         {
-            Product p = await this.DataContext.Products.FindAsync(id);
+            Product p = TempData.ContainsKey("product") ?
+                JsonSerializer.Deserialize<Product>(TempData["product"] as string) 
+                : await this.DataContext.Products.FindAsync(id);
+
             ViewModel = ViewModelFactory.Edit(p, Categories, Suppliers);
         }
 
         public async Task<IActionResult> OnPostAsync([FromForm] Product product)
         {
+            await CheckNewCategory(product);
+
             if (ModelState.IsValid)
             {
                 product.Category = default;

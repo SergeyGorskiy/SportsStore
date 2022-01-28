@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SportsStore.Web.EF;
 using SportsStore.Web.Models;
@@ -21,5 +22,16 @@ namespace SportsStore.Web.Pages
 
         public IEnumerable<Supplier> Suppliers => DataContext.Suppliers;
 
+        protected async Task CheckNewCategory(Product product)
+        {
+            if (product.CategoryId == -1 && !string.IsNullOrEmpty(product.Category?.Name))
+            {
+                DataContext.Categories.Add(product.Category);
+                await DataContext.SaveChangesAsync();
+                product.CategoryId = product.Category.CategoryId;
+                ModelState.Clear();
+                TryValidateModel(product);
+            }
+        }
     }
 }
